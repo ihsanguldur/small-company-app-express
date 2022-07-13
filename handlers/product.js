@@ -7,7 +7,7 @@ const {Op} = require('sequelize');
 const create = asyncHandler(async (req, res, next) => {
     const {name, code, quantity} = req.body;
     if (!name || !code) {
-        return next(new CustomError(400, 'Name and Code are Required.'));
+        next(new CustomError(400, 'Name and Code are Required.'));
     }
 
     const product = await Product.create({name, code, quantity});
@@ -33,7 +33,7 @@ const getOne = asyncHandler(async (req, res, next) => {
 
     const product = await Product.findOne({where: {code}});
     if (!product) {
-        return next(new CustomError(400, 'There is no Product with Code: ' + code));
+        next(new CustomError(400, 'There is no Product with Code: ' + code));
     }
 
     successPresenter(res, 'Product Found.', product);

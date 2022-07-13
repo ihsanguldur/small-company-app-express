@@ -7,7 +7,7 @@ const generateToken = require('../utils/generateJWT');
 const create = asyncHandler(async (req, res, next) => {
     const {name} = req.body;
     if (!name) {
-        return next(new CustomError(400, 'Name is Required.'));
+        next(new CustomError(400, 'Name is Required.'));
     }
 
     const customer = await Customer.create({name});
@@ -26,7 +26,7 @@ const login = asyncHandler(async (req, res, next) => {
 
     const customer = await Customer.findByPk(id);
     if (!customer) {
-        return next(new CustomError(400, 'There is no User with ID: ' + id));
+        next(new CustomError(400, 'There is no User with ID: ' + id));
     }
 
     const token = generateToken(id);

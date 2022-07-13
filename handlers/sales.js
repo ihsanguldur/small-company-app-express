@@ -7,21 +7,21 @@ const buy = asyncHandler(async (req, res, next) => {
     const {code, quantity} = req.query;
     const {id} = req.customer;
     if (!code || !quantity) {
-        return next(new CustomError(400, 'Code and Quantity is Required.'));
+        next(new CustomError(400, 'Code and Quantity is Required.'));
     }
 
     if (quantity <= 0) {
-        return next(new CustomError(400, 'Why????'));
+        next(new CustomError(400, 'Why????'));
     }
 
     const product = await Product.findOne({where: {code}});
     if (!product) {
-        return next(new CustomError(400, 'There is no Product with Code: ' + code));
+        next(new CustomError(400, 'There is no Product with Code: ' + code));
     }
 
     product.quantity -= quantity;
     if (product.quantity < 0) {
-        return next(new CustomError(406, 'Please Enter a Valid Product Quantity.'));
+        next(new CustomError(406, 'Please Enter a Valid Product Quantity.'));
     }
     await product.update({quantity: product.quantity}, {where: {id: product.id}, returning: true, plain: true});
 
